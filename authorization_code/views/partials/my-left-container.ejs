@@ -1,0 +1,131 @@
+<div id="my-left-container" class="">
+    <div id='toggle-left-container' onclick="ToggleLeftContainer()">
+        <i id="open-left-container" class="material-icons">keyboard_arrow_right</i>
+        <i id="close-left-container" class="material-icons">keyboard_arrow_left</i>
+    </div>
+    <div style="height: 100%;z-index: 5; background-color: white; border-right: 1px solid #d233ff;">
+        <ul id="channel-options-tabs" class="tabs z-depth-1">
+            <li class="tab col s3"><a class="active" href="#lightbulb-options-container"><img height="100%" src="/static/images/lightbulbiconpicture.png"/></a></li>
+            <li class="tab col s3"><a  href="#led-strip-options-container"><img height="100%" src="/static/images/ledstripiconpicture.png"/></a></li>
+            <li class="tab col s3"><a href="#led-pillow-options-container"><img height="100%" src="/static/images/pillowiconpicture.png"/></a></li>
+            <li class="tab col s3"><a href="#led-blanket-options-container"><img height="90%" src="/static/images/blanketiconpicture.png"/></a></li>
+        </ul>
+        <div id="channel-options-tabs-container">
+            <% for(const [key, option] of Object.entries(options_container)){ %>
+                <div id="<%=key%>-options-container" class="col s12">
+                    <ul id="<%=key%>-effects-tab" class="tabs effects-tab">
+                        <% 
+                            let effect_tab_keys = Object.keys(option.effects_tab);
+                            let column_size = Math.floor(12 / effect_tab_keys.length);
+                        %>
+                        <% for(let i = 0; i < effect_tab_keys.length; i++){ %>
+                            <li class="tab col m<%=column_size%>"><a class="<%= i == 0 ? 'active' : '' %>" href="#<%= key %>-<%= effect_tab_keys[i] %>-effects-container""><%= option.effects_tab[effect_tab_keys[i]].name %></a></li>
+                        <% }%>    
+                    </ul>
+                    <div id="<%= key %>-tabs-container">
+                        <% for(const [effect_tab_key, effect_tab_value] of Object.entries(option.effects_tab)){%>
+                            <div id="<%= key %>-<%= effect_tab_key %>-effects-container" class="col s12">
+                                <ul class="collapsible">
+                                    <% for(const [category_key, category_value] of Object.entries(effect_tab_value.categories)){%>
+                                        <li>
+                                            <div class="collapsible-header">
+                                                <span><%= category_value.name %></span>
+                                                <span class="new badge" data-badge-caption="">
+                                                    <i class="expand-more material-icons">expand_more</i>
+                                                    <i class="expand-less material-icons">expand_less</i>
+                                                </span>
+                                            </div>
+                                          <div class="collapsible-body">
+                                              <% for(let j = 0; j < category_value.options.length; j++){%>
+                                                <div class="effect-card" channel-type="<%= key %>" effect-type="<%= effect_tab_key %>" settings-type="<%= category_value.options[j].settings_type %>" effect-name="<%= category_value.options[j].name %>">
+                                                    <span class="effect-card-name"><%= category_value.options[j].name %></span>
+                                                    <span class="new badge" data-badge-caption="">
+                                                        <i class="expand-more material-icons">info_outline</i>
+                                                    </span>
+                                                </div>
+                                              <% } %>  
+                                          </div>
+                                        </li>
+                                    <% } %>    
+                                </ul>
+                            </div>
+                        <% } %> 
+                    </div>
+                </div>
+            <% }%>
+
+            <!--
+            <div id="lightbulb-options-container" class="col s12">
+                <ul id="lightbulb-effects-tab" class="tabs">
+                    <li class="tab col m6"><a class="active" href="#lightbulb-color-effects-container"">Color</a></li>
+                    <li class="tab col m6"><a  href="#lightbulb-brightness-effects-container">Brightness</a></li>
+                </ul>
+                <div id="lightbulb-tabs-container">
+                    <div id="lightbulb-color-effects-container" class="col s12">
+                        <ul class="collapsible">
+                            <li>
+                                <div class="collapsible-header">
+                                    <span>Solid Color</span>
+                                    <span class="new badge" data-badge-caption="">
+                                        <i class="expand-more material-icons">expand_more</i>
+                                        <i class="expand-less material-icons">expand_less</i>
+                                    </span>
+                                </div>
+                              <div class="collapsible-body">
+                                  <div class="effect-card" channel-type="lightbulb" effect-type="color">
+                                    <span class="effect-card-name">Color</span>
+                                    <span class="new badge" data-badge-caption="">
+                                        <i class="expand-more material-icons">info_outline</i>
+                                    </span>
+                                  </div>
+                              </div>
+                            </li>
+                            <li>
+                                <div class="collapsible-header">
+                                    <span>Gradient</span>
+                                    <span class="new badge" data-badge-caption="">
+                                        <i class="expand-more material-icons right">expand_more</i>
+                                        <i class="expand-less material-icons right">expand_less</i>
+                                    </span>
+                                </div>
+                              <div class="collapsible-body">
+                                    <div class="effect-card" channel-type="lightbulb" effect-type="color">
+                                        <span class="effect-card-name">Gradient</span>
+                                        <span class="new badge" data-badge-caption="">
+                                            <i class="expand-more material-icons">info_outline</i>
+                                        </span>
+                                    </div>
+                              </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div id="lightbulb-brightness-effects-container" class="col s12">
+                        <ul class="collapsible">
+                            <li>
+                                <div class="collapsible-header">
+                                    <span>Constant Brightness</span>
+                                    <span class="new badge" data-badge-caption="">
+                                        <i class="expand-more material-icons">expand_more</i>
+                                        <i class="expand-less material-icons">expand_less</i>
+                                    </span>
+                                </div>
+                              <div class="collapsible-body">
+                                  <div class="effect-card" channel-type="lightbulb" effect-type="brightness" category>
+                                    <span class="effect-card-name">Constant Brightness</span>
+                                    <span class="new badge" data-badge-caption="">
+                                        <i class="expand-more material-icons">info_outline</i>
+                                    </span>
+                                  </div>
+                              </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div id="led-strip-options-container" class="col s12">Test 2</div>
+            <div id="led-pillow-options-container" class="col s12">Test 3</div>
+            <div id="led-blanket-options-container" class="col s12">Test 4</div>
+            -->
+        </div>
+    </div>
+</div>

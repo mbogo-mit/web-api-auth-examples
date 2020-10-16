@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../partials/head.ejs');%>
+    <link type="text/css" rel="stylesheet" href="/static/css/playlistview.css"  media="screen,projection"/>
+  </head>
+
+  <body token="<%= access_token %>">
+    <nav>
+        <div class="nav-wrapper">
+            <a href="#" class="brand-logo">Mood</a>
+            <ul id="nav-mobile" class="right">
+            <li>
+                <a href="collapsible.html">
+                    <span><img id="nav-profile-img" src="<%= user.images[0].url%>"/></span>
+                    <span><%= user.display_name %></span>
+                </a>
+            </li>
+            </ul>
+        </div>
+    </nav>
+
+    <ul id="browse-moods-sidenav" class="sidenav">
+        <li>
+            <div class="user-view">
+                <div class="background">
+                    <img src="images/office.jpg">
+                </div>
+                <a href="#user"><img class="circle" src="images/yuna.jpg"></a>
+                <a href="#name"><span class="white-text name">John Doe</span></a>
+                <a href="#email"><span class="white-text email">jdandturk@gmail.com</span></a>
+            </div>
+        </li>
+        <li><a href="#!"><i class="material-icons">cloud</i>First Link With Icon</a></li>
+        <li><a href="#!">Second Link</a></li>
+        <li><div class="divider"></div></li>
+        <li><a class="subheader">Subheader</a></li>
+        <li><a class="waves-effect" href="#!">Third Link With Waves</a></li>
+    </ul>
+
+    <div class="row">
+        <div class="col m8">
+            <div class="row">
+                <div class="col m12">
+                    <div id="web-player-container">
+                        <%- include('../partials/web-player.ejs');%>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col m12">
+                    <a id="btn-browse-moods" data-target="browse-moods-sidenav" class="right waves-effect waves-light btn sidenav-trigger">Browse Moods</a>
+                </div>
+                <div class="col m12">
+                    <ul class="collapsible">
+                        <li>
+                            <div class="collapsible-header"><i class="material-icons">edit</i>Winds of Passion</div>
+                            <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+        </div>
+        <div class="col m4">
+            <% for(let i = 0; i < body.items.length; i++ ){%>
+            <div class="card horizontal" onclick="StartUserPlayBack('<%= body.items[i].track.uri %>')">
+                <div class="card-image">
+                    <img src="<%= body.items[i].track.album.images[0].url %>">
+                </div>
+                <div class="card-stacked">
+                    <div class="card-content">
+                        <a href="/editor/<%= body.items[i].track.id %>">Open Song In Editor</a>
+                        <div class="song-name"><%= body.items[i].track.name %></div>
+                        <div class="song-artists"><%= body.items[i].track.artists.map(function(value){ return value.name }).join(", ") %></div>
+                        <div class="song-album"><%= body.items[i].track.album.name %></div>
+                        <div class="song-date">date</div>
+                    </div>
+                </div>
+            </div>
+            <%}%>
+        </div>
+    </div>
+
+    <!--JavaScript at end of body for optimized loading-->
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    <script>
+        let DEVICE_ID = null;
+        let TOKEN = null;
+        window.onSpotifyWebPlaybackSDKReady = () => {
+            TOKEN = $("body").attr("token");
+            const player = new Spotify.Player({
+                name: 'Web Playback SDK Quick Start Player',
+                getOAuthToken: cb => { cb(TOKEN); }
+            });
+
+            // Error handling
+            player.addListener('initialization_error', ({ message }) => { console.error(message); });
+            player.addListener('authentication_error', ({ message }) => { console.error(message); });
+            player.addListener('account_error', ({ message }) => { console.error(message); });
+            player.addListener('playback_error', ({ message }) => { console.error(message); });
+
+            // Playback status updates
+            player.addListener('player_state_changed', state => { UpdateWebPlayerUI(state) });
+
+            // Ready
+            player.addListener('ready', ({ device_id }) => {
+                DEVICE_ID = device_id;
+                console.log('Ready with Device ID', DEVICE_ID);
+                TransferPlayBackToThisBrowser();
+            });
+
+            // Not Ready
+            player.addListener('not_ready', ({ device_id }) => {
+                console.log('Device ID has gone offline', device_id);
+            });
+
+            // Connect to the player!
+            player.connect();
+        };
+    </script>
+    <script type="text/javascript" src="/static/js/spotify_util_functions.js"></script>
+    <script type="text/javascript" src="/static/js/playlistview.js"></script>
+  </body>
+</html>

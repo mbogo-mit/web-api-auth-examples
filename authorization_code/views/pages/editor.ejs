@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+      <%- include('../partials/editor_head.ejs');%>
+  </head>
+  <body token="<%= access_token %>">
+
+    <nav id="my-navbar">
+        <div class="nav-wrapper">
+            <div class="row">
+                <div class="col m3">
+                    <a id="my-brand-logo" href="#" class="brand-logo">MOOD</a>
+                </div>
+                <div class="col m6" style="padding-left: 0px;line-height:32px;">
+                    <div id="project-name-container">
+                        <div id="project-name">
+                            <input id="input-project-name" placeholder="Untitled" type="text" class="validate" />
+                        </div>
+                        <div id="project-save-status">All Changes Saved</div>
+                    </div>
+                </div>
+                <div class="col m3" style="height: 64px;">
+                    <div class="right">
+                        <a id="btn-preview" class="btn dropdown-trigger" href="#!" data-target="dropdown-preview">Preview Light Show<i style="line-height: 36px;" class="material-icons right">arrow_drop_down</i></a>
+                        <ul id="dropdown-preview" class="dropdown-content">
+                            <li><a href="#!">Virutal</a></li>
+                            <li><a href="#!">Real</a></li>
+                        </ul>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </nav>
+    <div id="my-container" class="row">
+        <div id="song-preview-cover"></div>
+        <%- include('../partials/my-left-container.ejs', {options_container: options_container});%>
+        <div id="my-right-container" class="col m12">
+            <div id="spotify-player-container" class="row">
+                <div class="col m3" style="height:100%; padding:0px;">
+                    <div id="img-album-cover-container">
+                        <img id="img-album-cover" src="<%= body.album.images[0].url%>"/>
+                    </div>
+                    <div id="song-info-container" duration_ms="<%= body.duration_ms%>">
+                        <div id="song-name" class="truncated-song-info"><%= body.name %></div>
+                        <div id="song-author" class="truncated-song-info"><%= body.artists.map((value) => value.name).join(", ")%></div>
+                    </div>
+                </div>
+                <div style="height: 100%; padding-left:0px;" class="col m7 valign-wrapper">
+                    <div id="playback-state-container" state="play">
+                        <i id="btn-resume-song" onclick="ResumeSongPlayback()" class="material-icons">play_circle_outline</i>
+                        <i id="btn-pause-song" onclick="PauseSongPlayback()" class="material-icons">pause_circle_outline</i>
+                    </div>
+                    <span id="playback-current-time">1:34</span>
+                    <div id="playback-slider"></div>
+                    <span id="playback-duration-time">4:12</span>
+                </div>
+                <div style="height: 100%; padding:0px;" class="col m2 valign-wrapper">
+                    <i id="icon-volume-slider" class="material-icons">volume_up</i>
+                    <div id="volume-slider"></div>
+                </div>
+            </div>
+            <div id="second-container" class="row">
+                <div class="col m1" style="padding: 0px; width: 165.5px; position: relative; z-index: 3;">
+                    <a id="btn-add-channel" class="btn-flat dropdown-trigger" href="#!" data-target="new-channel-dropdown">Add Channel<i class="material-icons right">arrow_drop_down</i></a>
+                    <ul id="new-channel-dropdown" class="dropdown-content">
+                        <li><a href="#!" onclick="AddChannelToEditor('audio-analysis')"><img style="position:relative;top:2px;" height="23px" src="/static/images/audioanalysisicon.png"/><span style="position:relative;top:-2px;" >Audio Analysis</span></a></li>
+                        <li><a href="#!" onclick="AddChannelToEditor('lightbulb')"><img style="position:relative;top:2px;" height="23px" src="/static/images/lightbulbiconpicture.png"/><span style="position:relative;top:-2px;" >Light Bulb</span></a></li>
+                        <li><a href="#!" onclick="AddChannelToEditor('led-strip')"><img style="position:relative;top:4px;" height="20px" src="/static/images/ledstripiconpicture.png"/><span style="position:relative;top:0px;" >LED Strip</span></a></li>
+                        <li><a href="#!" onclick="AddChannelToEditor('led-pillow')"><img style="position:relative;top:6px;" height="20px" src="/static/images/pillowiconpicture.png"/><span style="position:relative;top:2px;" >LED Pillow</span></a></li>
+                        <li><a href="#!" onclick="AddChannelToEditor('led-blanket')"><img style="position:relative;top:6px;" height="18px" src="/static/images/blanketiconpicture.png"/><span style="position:relative;top:2px;" >LED Blanket</span></a></li>
+                    </ul>
+                </div>
+                <div id="time-line-container" class="col m1">
+                    <div id="timeline-mover"></div>
+                </div>
+                <div id="timeline-mark-container">
+                    <div id="timeline-mark-container-mover">
+                        <div id="timeline-mark-triangle"></div>
+                        <div id="timeline-mark-stick"></div>
+                    </div>
+                    
+                </div>
+            </div>
+            <div id="channel-container" class="row">  
+
+            </div>
+            <div id="zoom-position-control-container" class="row">
+                <div id="zoom-control-container" class="col m1 valign-wrapper">
+                    <i id="icon-zoom-slider" class="material-icons">zoom_in</i>
+                    <div id="zoom-slider"></div>
+                </div>
+                <div id="scroll-bar-container" class="col m1 valign-wrapper">
+                    <div id="scroll-bar-background">
+                        <div id="scroll-bar"></div>  
+                    </div>   
+                </div>
+                
+            </div>
+        </div>
+        <div id="my-settings-container" class="">
+            <div id="my-settings-header">
+                <span class="left">
+                    <i class="material-icons" style="color: #eeeeee">settings</i>
+                </span>
+                <span style="margin-left: 5px;">Settings</span>
+                <span class="new badge" data-badge-caption="">
+                <i class="material-icons" style="color: #eeeeee; cursor:pointer;" onclick="CloseSettings()">cancel</i>
+                </span>
+            </div>
+            <div id="my-settings-content-container">
+                <div id="my-settings-content-breadcrumbs">
+
+                </div>
+                <div id="my-settings-content">
+                    
+                </div>
+            </div>
+            <div id="my-settings-loading-screen" class="center">
+                <div class="preloader-wrapper big active">
+                    <div class="spinner-layer spinner-blue-only">
+                        <div class="circle-clipper left">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="gap-patch">
+                            <div class="circle"></div>
+                        </div>
+                        <div class="circle-clipper right">
+                            <div class="circle"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Custtom Js Script -->
+    <script src="https://sdk.scdn.co/spotify-player.js"></script>
+    <script>
+        let DEVICE_ID = null;
+        let TOKEN = null;
+        let player;
+        window.onSpotifyWebPlaybackSDKReady = () => {
+            TOKEN = $("body").attr("token");
+            player = new Spotify.Player({
+                name: 'Web Playback SDK Quick Start Player',
+                getOAuthToken: cb => { cb(TOKEN); }
+            });
+
+            // Error handling
+            player.addListener('initialization_error', ({ message }) => { console.error(message); });
+            player.addListener('authentication_error', ({ message }) => { console.error(message); });
+            player.addListener('account_error', ({ message }) => { console.error(message); });
+            player.addListener('playback_error', ({ message }) => { console.error(message); });
+
+            // Playback status updates
+            player.addListener('player_state_changed', state => { UpdateMyWebPlayerUI(state) });
+
+            // Ready
+            player.addListener('ready', ({ device_id }) => {
+                DEVICE_ID = device_id;
+                console.log('Ready with Device ID', DEVICE_ID);
+                TransferPlayBackToThisBrowser();
+
+                // once we are ready we will set the volume slider to the volume of the player
+                player.getVolume().then(volume => {
+                    document.getElementById('volume-slider').noUiSlider.set([null, volume]);
+                });
+            });
+
+            // Not Ready
+            player.addListener('not_ready', ({ device_id }) => {
+                console.log('Device ID has gone offline', device_id);
+            });
+
+            // Connect to the player!
+            player.connect();
+        };
+    </script>
+    <script type="text/javascript" src="/static/js/editor_ejsTemplates.js"></script>
+    <script type="text/javascript" src="/static/js/EditorObj.js"></script>
+    <script type="text/javascript" src="/static/js/editor_GlobalVars.js"></script>
+    <script type="text/javascript" src="/static/js/spotify_util_functions.js"></script>
+    <script type="text/javascript" src="/static/js/editor_functions.js"></script>
+    <script type="text/javascript" src="/static/js/editor_scripts.js"></script>
+  </body>
+</html>

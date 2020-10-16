@@ -1,0 +1,15 @@
+#nav-profile-img {
+    margin: 10px 10px -15px 0px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+}
+
+.my-row {
+    margin: 0px !important;
+}
+
+.my-col {
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}
