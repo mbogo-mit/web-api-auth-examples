@@ -1,0 +1,45 @@
+<div class="row">
+    <div class="col s12 m4">
+        <% for(let i = 0; i < body.items.length; i+=3){%>
+            <div class="card playlist-card" onclick="OpenPlaylist('<%= body.items[i].id %>')">
+                <div class="card-image">
+                    <img src="<%= body.items[i].images[0].url %>">
+                <span class="card-title"><%= body.items[i].name.length > 20 ? `${body.items[i].name.substring(0,20)}...` : body.items[i].name %></span>
+                    <a href="/playlists/<%= body.items[i].id %>/tracks" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">play_arrow</i></a>
+                </div>
+                <div class="card-content">
+                    <p><%= body.items[i].description %></p>
+                </div>
+            </div>
+        <%}%>
+    </div>
+    <div class="col s12 m4">
+        <% for(let i = 1; i < body.items.length; i+=3){%>
+            <div class="card playlist-card" onclick="OpenPlaylist('<%= body.items[i].id %>')">
+                <div class="card-image">
+                    <img src="<%= body.items[i].images[0].url%>">
+                <span class="card-title"><%= body.items[i].name.length > 20 ? `${body.items[i].name.substring(0,20)}...` : body.items[i].name %></span>
+                    <a href="/playlists/<%= body.items[i].id%>/tracks" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">play_arrow</i></a>
+                </div>
+                <div class="card-content">
+                    <p><%= body.items[i].description %></p>
+                </div>
+            </div>
+        <%}%>
+    </div>
+    <div class="col s12 m4">
+        <% for(let i = 2; i < body.items.length; i+=3){%>
+            <div class="card playlist-card" onclick="OpenPlaylist('<%= body.items[i].id %>')">
+                <div class="card-image">
+                    <img src="<%= body.items[i].images[0].url%>">
+                <span class="card-title"><%= body.items[i].name.length > 20 ? `${body.items[i].name.substring(0,20)}...` : body.items[i].name %></span>
+                    <a href="/playlists/<%= body.items[i].id%>/tracks" class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">play_arrow</i></a>
+                </div>
+                <div class="card-content">
+                    <p><%= body.items[i].description %></p>
+                </div>
+            </div>
+        <%}%>
+    </div>
+
+</div>

@@ -1,0 +1,36 @@
+<div id="web-player" class="row my-row">
+    <div class="col m3">
+
+    </div>
+    <div class="col m6">
+        <div class="row my-row">
+            <div class="col m12 center">
+                <i id="playback-control-shuffle" class="playback-controls material-icons">shuffle</i>
+                <i id="playback-control-skip-previous" onclick="SkipPlayBackToPreviousTrack()" class="playback-controls material-icons">skip_previous</i>
+                <i id="playback-control-pause" onclick="PausePlayBack()" class="playback-controls material-icons">pause_circle_outline</i>
+                <i id="playback-control-resume" onclick="ResumePlayBack()" class="active playback-controls material-icons">play_circle_outline</i>
+                <i id="playback-control-skip-next" onclick="SkipPlayBackToNextTrack()" class="playback-controls material-icons">skip_next</i>
+                <i id="playback-control-repeat"class="playback-controls material-icons">repeat</i>
+            </div>
+            <div class="col m12">
+                <div class="row my-row">
+                    <div class="col m2">
+                        <span id="current-playback-time"></span>
+                    </div>
+                    <div class="col m8">
+                        <div id="playback-progress" class="progress">
+                            <div class="determinate" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="col m2">
+                        <span id="song-playback-time"></span>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+    <div class="col m3">
+
+    </div>
+</div>

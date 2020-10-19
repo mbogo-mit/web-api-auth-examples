@@ -1,0 +1,28 @@
+#playback-progress {
+    display: inline-block;
+}
+
+#playback-control-pause, #playback-control-resume {
+    display: none;
+}
+
+#playback-control-pause.active, #playback-control-resume.active {
+    display: inline-block;
+}
+
+.playback-controls:hover {
+    cursor: pointer;
+    color: #ee6e73;
+}
+
+.playback-controls.disallowed {
+    color: #eeeeee;
+}
+
+#btn-browse-moods {
+    border-radius: 25px;
+}
+
+#browse-moods-sidenav {
+    width: 25%;
+}
