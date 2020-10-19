@@ -3,7 +3,7 @@
   <head>
       <%- include('../partials/editor_head.ejs');%>
   </head>
-  <body token="<%= access_token %>">
+  <body spotify-id="<%= body.id %>" token="<%= access_token %>">
 
     <nav id="my-navbar">
         <div class="nav-wrapper">
@@ -32,6 +32,11 @@
             </div>
         </div>
     </nav>
+    <div id="video-preview-container">
+        <div id="video-preview">
+            <div id="video-preview-label">Video Preview</div>
+        </div>
+    </div>
     <div id="my-container" class="row">
         <div id="song-preview-cover"></div>
         <%- include('../partials/my-left-container.ejs', {options_container: options_container});%>
@@ -140,9 +145,11 @@
     <script>
         let DEVICE_ID = null;
         let TOKEN = null;
+        let SPOTIFY_ID = null;
         let player;
         window.onSpotifyWebPlaybackSDKReady = () => {
             TOKEN = $("body").attr("token");
+            SPOTIFY_ID = $("body").attr("spotify-id");
             player = new Spotify.Player({
                 name: 'Web Playback SDK Quick Start Player',
                 getOAuthToken: cb => { cb(TOKEN); }

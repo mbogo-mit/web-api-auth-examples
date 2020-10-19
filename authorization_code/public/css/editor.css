@@ -21,15 +21,38 @@ body {
 #my-container {
     margin-bottom: 0px;
     background-color: red;
-    height: calc(100vh - 64px);
+    height: calc(55vh - 64px);
+}
+
+#video-preview-container {
+    height: 45vh;
+    background-color: #fafafa;
+}
+
+#video-preview-label {
+    padding: 3px 5px;
+    background-color: rgba(255, 88, 160, 0.5);
+    color: white;
+    display: inline;
+    position: absolute;
+    font-size: 12px;
+}
+
+#video-preview {
+    margin: 5px 0px;
+    background-color: #424242;
+    position: absolute;
+    height: calc(45vh - 10px);
+    width: 45vw;
+    left: 27.5vw;
 }
 
 #song-preview-cover {
     display: none;
     position: absolute;
-    top: 124px;
+    top: calc(45vh + 124px);
     background-color: rgba(0,0,0,0.2);
-    height: calc(100vh - 60px);
+    height: calc(55vh - 124px);
     width: 100vw;
     z-index: 10;
 }
@@ -359,7 +382,7 @@ body {
 
 #channel-container {
     margin: 0px !important;
-    height: calc(100vh - 160px - 30px);
+    height: calc(55vh - 160px - 30px);
     overflow-y: scroll;
     overflow-x: hidden;
 }
@@ -380,8 +403,6 @@ body {
 
 .channel-image-container {
     line-height: 0;
-    /*background-color: #ff2c87;*/
-    /*background-color:  #d233ff;*/
     background-image: linear-gradient(to bottom right, #ff58a1, #d233ff);
     border-radius: 3px;
     padding: 3px;
@@ -394,15 +415,17 @@ body {
 
 .channel-name {
     display: inline-block;
+    width: calc(100% - 30px);
 }
 
 .channel-name .input-channel-name {
     height: auto !important;
     margin-bottom: 0px !important;
-    width: 300px !important;
     border-bottom: none !important;
     position: relative;
     top: -4px;
+    width: calc(100% - 15px) !important;
+    font-size: 14px !important;
 }
 
 .channel-name input[type=text].input-channel-name:focus, #input-project-name:focus {
@@ -424,7 +447,7 @@ body {
 
 .channel-layer-names-container {
     display: inline-block;
-    padding: 10px;
+    padding: 3px 0px 3px 3px !important;
     width: 165.5px !important;
     position: relative;
     z-index: 2;
@@ -443,7 +466,30 @@ body {
     padding: 4.5px 0px;
 }
 
+.connected-lights-badge, .connected-led-strips-badge {
+    margin: 6px 0px 0px 2px !important;
+}
 
+.connected-led-pillows-badge, .connected-led-blankets-badge {
+    margin: 36px 0px 0px 2px !important;
+}
+
+.connected-lights-badge, .connected-led-strips-badge, .connected-led-pillows-badge, .connected-led-blankets-badge {
+    background-color: #eeeeee !important;
+    color: #212121 !important;
+    width: calc(100% - 7px);
+    cursor: pointer;
+}
+
+.channel-layer-timeline-label {
+    font-size: 12px;
+    background-color: rgba(230, 230, 230, 0.5);;
+    padding: 0px 3px;
+    position: relative;
+    top: -7px;
+    z-index: 4;
+    color: #757575;
+}
 
 .channel-layer-timeline {
     height: 31px;
@@ -487,7 +533,7 @@ body {
 #timeline-mark-stick {
     position: absolute;
     left: calc(165.5px);
-    height: calc(100vh - 124px - 30px);
+    height: calc(55vh - 124px - 30px);
     width: 1px;
     background-color: #ff2c87;
     visibility: visible;

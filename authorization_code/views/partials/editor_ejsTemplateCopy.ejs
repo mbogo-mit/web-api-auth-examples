@@ -2,40 +2,34 @@
 <!-- Lightbulb channel -->
 <div id="<%= id %>" class="channel" type="lightbulb" class="col m12">
     <div class="card white darken-1 z-depth-0">
-        <div class="row my-row">
-            <div class="col m12">
-                <div class="channel-header">
-                    <div class="channel-image-container">
-                        <img height="18px" src="/static/images/lightbulbiconpicture.png"/>
-                    </div>
-                    <div class="channel-name">
-                        <input class="input-channel-name validate" placeholder="Untitled" type="text" onchange="ChannelNameChanged()" />
-                    </div>
-                    <div class="channel-options-dropdown-container right">
-                        <i class="expand-more material-icons dropdown-trigger" data-target="channel-options-dropdown-<%= id %>">expand_more</i>
-                        <ul id='channel-options-dropdown-<%= id %>' class='dropdown-content'>
-                            <li><a href="#!">Duplicate</a></li>
-                            <li><a href="#!">Delete</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
         <div style="padding-left: 10px;" class="row my-row">
             <div class="col m1 channel-layer-names-container">
-                <div class="channel-layer-name" type="color">Color</div>
-                <div class="channel-layer-name" type="brightness">Brightness</div>
+                <div class="channel-image-container">
+                    <img height="18px" src="/static/images/lightbulbiconpicture.png"/>
+                </div>
+                <div class="channel-name">
+                    <input class="input-channel-name validate" placeholder="Untitled" type="text" onchange="ChannelNameChanged()" />
+                </div>
+                <div>
+                    <span class="left new badge connected-lights-badge" data-badge-caption="device(s) connected">0</span>
+                </div>
             </div>
             <div class=" col m1 channel-layer-timelines-container">
                 <div class="channel-layer-timeline" type="color">
                     <div class="channel-layer-timeline-mover">
-
+                    
                     </div>
+                    <span class="channel-layer-timeline-label">
+                        Color
+                    </span>
                 </div>
                 <div class="channel-layer-timeline" type="brightness">
                     <div class="channel-layer-timeline-mover">
-                        
+                    
                     </div>
+                    <span class="channel-layer-timeline-label">
+                        Brightness
+                    </span>
                 </div>
             </div>
         </div>
@@ -48,33 +42,34 @@
 <!-- Led Strip channel -->
 <div id="<%= id %>" class="channel" type="led-strip" class="col m12">
     <div class="card white darken-1 z-depth-0">
-        <div class="row my-row">
-            <div class="col m12">
-                <div class="channel-header">
-                    <div class="channel-image-container">
-                        <img height="18px" src="/static/images/ledstripiconpicture.png"/>
-                    </div>
-                    <div class="channel-name">
-                        <input class="input-channel-name validate" placeholder="Untitled" type="text" onchange="ChannelNameChanged()" />
-                    </div>
-                </div>
-            </div>
-        </div>
         <div style="padding-left: 10px;" class="row my-row">
             <div class="col m1 channel-layer-names-container">
-                <div class="channel-layer-name" type="colors">Colors</div>
-                <div class="channel-layer-name" type="brightness">Brightness</div>
+                <div class="channel-image-container">
+                    <img height="18px" src="/static/images/ledstripiconpicture.png"/>
+                </div>
+                <div class="channel-name">
+                    <input class="input-channel-name validate" placeholder="Untitled" type="text" onchange="ChannelNameChanged()" />
+                </div>
+                <div>
+                    <span class="left new badge connected-led-strips-badge" data-badge-caption="device(s) connected">0</span>
+                </div>
             </div>
             <div class=" col m1 channel-layer-timelines-container">
                 <div class="channel-layer-timeline" type="colors">
                     <div class="channel-layer-timeline-mover">
                         
                     </div>
+                    <span class="channel-layer-timeline-label">
+                        Colors
+                    </span>
                 </div>
                 <div class="channel-layer-timeline" type="brightness">
                     <div class="channel-layer-timeline-mover">
                         
                     </div>
+                    <span class="channel-layer-timeline-label">
+                        Brightness
+                    </span>
                 </div>
             </div>
         </div>
@@ -87,39 +82,42 @@
 <!-- Led Pillow channel -->
 <div id="<%= id %>" class="channel" type="led-pillow" class="col m12">
     <div class="card white darken-1 z-depth-0">
-        <div class="row my-row">
-            <div class="col m12">
-                <div class="channel-header">
-                    <div class="channel-image-container">
-                        <img height="18px" src="/static/images/pillowiconpicture.png"/>
-                    </div>
-                    <div class="channel-name">
-                        <input class="input-channel-name validate" placeholder="Untitled" type="text" onchange="ChannelNameChanged()" />
-                    </div>
-                </div>
-            </div>
-        </div>
         <div style="padding-left: 10px;" class="row my-row">
             <div class="col m1 channel-layer-names-container">
-                <div class="channel-layer-name" type="text-graphics">Text/Graphics</div>
-                <div class="channel-layer-name" type="background">Background</div>
-                <div class="channel-layer-name" type="brightness">Brightness</div>
+                <div class="channel-image-container">
+                    <img height="18px" src="/static/images/pillowiconpicture.png"/>
+                </div>
+                <div class="channel-name">
+                    <input class="input-channel-name validate" placeholder="Untitled" type="text" onchange="ChannelNameChanged()" />
+                </div>
+                <div>
+                    <span class="left new badge connected-led-pillows-badge" data-badge-caption="device(s) connected">0</span>
+                </div>
             </div>
             <div class=" col m1 channel-layer-timelines-container">
                 <div class="channel-layer-timeline" type="text-graphics">
                     <div class="channel-layer-timeline-mover">
                         
                     </div>
+                    <span class="channel-layer-timeline-label">
+                        Text/Graphics
+                    </span>
                 </div>
                 <div class="channel-layer-timeline" type="background">
                     <div class="channel-layer-timeline-mover">
                         
                     </div>
+                    <span class="channel-layer-timeline-label">
+                        Background
+                    </span>
                 </div>
                 <div class="channel-layer-timeline" type="brightness">
                     <div class="channel-layer-timeline-mover">
                         
                     </div>
+                    <span class="channel-layer-timeline-label">
+                        Brightness
+                    </span>
                 </div>
             </div>
         </div>
@@ -131,39 +129,42 @@
 <!-- Led blanket channel -->
 <div id="<%= id %>" class="channel" type="led-blanket" class="col m12">
     <div class="card white darken-1 z-depth-0">
-        <div class="row my-row">
-            <div class="col m12">
-                <div class="channel-header">
-                    <div class="channel-image-container">
-                        <img height="18px" src="/static/images/blanketiconpicture.png"/>
-                    </div>
-                    <div class="channel-name">
-                        <input class="input-channel-name validate" placeholder="Untitled" type="text" onchange="ChannelNameChanged()" />
-                    </div>
-                </div>
-            </div>
-        </div>
         <div style="padding-left: 10px;" class="row my-row">
             <div class="col m1 channel-layer-names-container">
-                <div class="channel-layer-name" type="text-graphics">Text/Graphics</div>
-                <div class="channel-layer-name" type="background">Background</div>
-                <div class="channel-layer-name" type="brightness">Brightness</div>
+                <div class="channel-image-container">
+                    <img height="18px" src="/static/images/blanketiconpicture.png"/>
+                </div>
+                <div class="channel-name">
+                    <input class="input-channel-name validate" placeholder="Untitled" type="text" onchange="ChannelNameChanged()" />
+                </div>
+                <div>
+                    <span class="left new badge connected-led-blankets-badge" data-badge-caption="device(s) connected">0</span>
+                </div>
             </div>
             <div class=" col m1 channel-layer-timelines-container">
                 <div class="channel-layer-timeline" type="text-graphics">
                     <div class="channel-layer-timeline-mover">
                         
                     </div>
+                    <span class="channel-layer-timeline-label">
+                        Text/Graphics
+                    </span>
                 </div>
                 <div class="channel-layer-timeline" type="background">
                     <div class="channel-layer-timeline-mover">
                         
                     </div>
+                    <span class="channel-layer-timeline-label">
+                        Background
+                    </span>
                 </div>
                 <div class="channel-layer-timeline" type="brightness">
                     <div class="channel-layer-timeline-mover">
                         
                     </div>
+                    <span class="channel-layer-timeline-label">
+                        Brightness
+                    </span>
                 </div>
             </div>
         </div>

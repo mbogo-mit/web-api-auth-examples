@@ -109,3 +109,20 @@ function StartUserPlayBack(spotifyURI = "", offset = {}, position_ms = 0){
         dataType: 'json'
     });
 }
+
+function GetTrackAudioAnalysis(){
+    // first we have to check if resume is a disallowed action
+    if(TOKEN == null || SPOTIFY_ID == null){return}
+    
+    $.ajax({
+        type: "GET",
+        headers: { 'Authorization': 'Bearer ' + TOKEN },
+        url: `https://api.spotify.com/v1/audio-analysis/${SPOTIFY_ID}`,
+        data: JSON.stringify({}),
+        complete: function(response){
+            console.log(response);
+        },
+        contentType: 'application/json',
+        dataType: 'json'
+    });
+}

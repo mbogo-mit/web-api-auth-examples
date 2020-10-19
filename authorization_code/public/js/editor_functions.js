@@ -243,6 +243,8 @@ function AddChannelToEditor(type){
         html += ejs.render(Templates.channels[type],{id: rid});
     }else if(type == 'led-blanket'){
         html += ejs.render(Templates.channels[type],{id: rid});
+    }else if(type == 'audio-analysis'){
+        GetTrackAudioAnalysis();
     }
 
     $("#channel-container").append(html);

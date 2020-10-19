@@ -217,6 +217,86 @@ app.get('/playlists/:playlistId/tracks', function (req, res) {
   });
 })
 
+app.get('/audio-analysis/:SpotifyID', function (req, res) {
+  var options = {
+         
+    url: `https://api.spotify.com/v1/audio-analysis/${req.params.SpotifyID}`,
+    headers: { 'Authorization': 'Bearer ' + req.session.access_token },
+    json: true
+  };
+
+  // use the access token to access the Spotify Web API
+  request.get(options, function(error, response, body) {
+
+    // now we need to create a datasets object for chart js to render everything we need
+    /*
+    datasets: [{
+					label: 'Dataset with string point data',
+					backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+					borderColor: window.chartColors.red,
+					fill: false,
+					data: [{
+						x: newDateString(0),
+						y: randomScalingFactor()
+					}, {
+						x: newDateString(2),
+						y: randomScalingFactor()
+					}, {
+						x: newDateString(4),
+						y: randomScalingFactor()
+					}, {
+						x: newDateString(5),
+						y: randomScalingFactor()
+					}],
+				},.....{...}]
+    */
+
+    let color_pitches = [
+      "rgb(253, 242, 126)", // yellow
+      "rgb(191, 227, 140)",
+      "rgb(119, 208, 150)",
+      "rgb(108, 209, 205)",
+      "rgb(75, 196, 243)",
+      "rgb(107, 159, 219)",
+      "rgb(131, 123, 197)", // purple
+      "rgb(196, 136, 198)",
+      "rgb(244, 132, 180)",
+      "rgb(244, 127, 136)",
+      "rgb(248, 153, 99)",
+      "rgb(251, 182, 105)",
+    ];
+
+    //console.log(body.segments.length);
+
+    let datasets = [];
+    for(let i = 0; i < Math.floor(body.segments.length / 4); i++){
+      let min_value = Math.min(...body.segments[i].pitches);
+      for(let j = 0; j < body.segments[i].pitches.length; j++){
+        if(datasets[j] === undefined){
+          datasets[j] = {
+            label: `Pitch ${j + 1}`,
+            backgroundColor: color_pitches[j],
+            borderColor: color_pitches[j],
+            fill: false,
+            data: [],
+            lineTension: 0,
+          };
+        }
+        
+        datasets[j].data.push({
+          x: body.segments[i].start * 1000,
+          //y: body.segments[i].pitches[j] - min_value,
+          y: j + 1,
+        });
+      }
+    }
+
+    console.log(datasets)
+
+    res.render('pages/audio-analysis-chart.ejs',{datasets: datasets});
+  });
+});
+
 app.get('/editor/:SpotifyID', function (req, res) {
   var options = {
          
