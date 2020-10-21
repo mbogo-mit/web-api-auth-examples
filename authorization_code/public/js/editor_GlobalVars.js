@@ -1,6 +1,9 @@
 let ZOOM = 1.0;
 const MARK_SPACING = 70;// the number of pixels between each mark of time
 let MARK_STARTING_POSITION = 0;
+let MARK_STARTING_CANVAS_POSITION = 0;
+let MARK_STARTING_CANVAS_ZOOM = 1.0;
+let datasets = null;
 const TIME_STEP = 500;
 let CURRENT_SONG_TIME = 0;
 let timeline_mark_triangle_change_x = 0;

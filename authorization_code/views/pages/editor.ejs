@@ -88,7 +88,25 @@
                 </div>
             </div>
             <div id="channel-container" class="row">  
+                <div id="audio-analysis-channel" class="channel" type="audio-analysis" class="col m12">
+                    <div class="card white darken-1 z-depth-0">
+                        <div style="padding-left: 10px;" class="row my-row">
+                            <div class="col m1 channel-layer-names-container">
+                                <div class="channel-image-container">
+                                    <img height="18px" src="/static/images/lightbulbiconpicture.png"/>
+                                </div>
+                                <div class="channel-name">
+                                    <input class="input-channel-name validate" value="Audio Analysis" type="text" disabled="disabled" />
+                                </div>
+                            </div>
+                            <div class=" col m1 channel-layer-timelines-container">
+                                <div id="audio-analysis-canvas-container">
 
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div id="zoom-position-control-container" class="row">
                 <div id="zoom-control-container" class="col m1 valign-wrapper">
@@ -170,6 +188,9 @@
                 console.log('Ready with Device ID', DEVICE_ID);
                 TransferPlayBackToThisBrowser();
 
+                // get the audio analysis dat for this track
+                GetDatasetsAudioAnalysis();
+
                 // once we are ready we will set the volume slider to the volume of the player
                 player.getVolume().then(volume => {
                     document.getElementById('volume-slider').noUiSlider.set([null, volume]);
@@ -191,5 +212,6 @@
     <script type="text/javascript" src="/static/js/spotify_util_functions.js"></script>
     <script type="text/javascript" src="/static/js/editor_functions.js"></script>
     <script type="text/javascript" src="/static/js/editor_scripts.js"></script>
+    <script type="text/javascript" src="/static/js/audio-analysis-sketch.js"></script>
   </body>
 </html>

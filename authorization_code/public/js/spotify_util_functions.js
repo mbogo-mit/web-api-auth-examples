@@ -126,3 +126,21 @@ function GetTrackAudioAnalysis(){
         dataType: 'json'
     });
 }
+
+function GetDatasetsAudioAnalysis(){
+    // first we have to check if resume is a disallowed action
+    if(SPOTIFY_ID == null){return}
+    
+    $.ajax({
+        type: "GET",
+        headers: {},
+        url: `http://localhost:8888/audio-analysis/${SPOTIFY_ID}`,
+        data: JSON.stringify({}),
+        complete: function(response){
+            console.log(response.responseJSON);
+            datasets = response.responseJSON;
+        },
+        contentType: 'application/json',
+        dataType: 'json'
+    });
+}

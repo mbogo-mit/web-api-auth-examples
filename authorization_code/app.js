@@ -230,25 +230,19 @@ app.get('/audio-analysis/:SpotifyID', function (req, res) {
 
     // now we need to create a datasets object for chart js to render everything we need
     /*
-    datasets: [{
-					label: 'Dataset with string point data',
-					backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
-					borderColor: window.chartColors.red,
-					fill: false,
-					data: [{
-						x: newDateString(0),
-						y: randomScalingFactor()
-					}, {
-						x: newDateString(2),
-						y: randomScalingFactor()
-					}, {
-						x: newDateString(4),
-						y: randomScalingFactor()
-					}, {
-						x: newDateString(5),
-						y: randomScalingFactor()
-					}],
-				},.....{...}]
+    datasets = {
+      pitches: [
+        [{start_time: <FLOAT>, duration: <FLOAT>, value: <FLOAT>},..., {...}],
+        ...,
+        [{start_time: <FLOAT>, duration: <FLOAT>, value: <FLOAT>},..., {...}],
+      ],
+      loudness: [
+        {start_time: <Integer>, start_value: <Integer>, max_time: <Integer>, max_value: <Integer>},
+        ...
+        {...}
+      ],
+      beats: body.beats, // just a copy of what spotify api gives
+    };
     */
 
     let color_pitches = [
@@ -266,36 +260,136 @@ app.get('/audio-analysis/:SpotifyID', function (req, res) {
       "rgb(251, 182, 105)",
     ];
 
-    //console.log(body.segments.length);
+    //console.log(body.segments[32]);
 
-    let datasets = [];
-    for(let i = 0; i < Math.floor(body.segments.length / 4); i++){
+    let datasets = {
+      pitches: [],
+      timbre_colors: [], //array of rgb color arrays that display the first three values (normalized) of the timbre vector as color to start visualizing the difference between and similarities with different parts of the music
+      timbre_uniqueness: [],
+      loudness: [],
+      beats: body.beats,
+      tatums: body.tatums,
+      track_duration: body.track.duration * 1000,
+      loudness_max: body.segments[0].loudness_max,
+      loudness_min: body.segments[0].loudness_start,
+    };
+
+
+    let timbre_categories = [];// array of objects {timbre: [...], segment_indexes: [...]}
+    let max_distance = 150;
+    let dimensions = 3;
+
+    let timbre_colors = {
+      min: [],
+      max: [],
+    };
+
+    function getNormalizedTimbreColor(arr) {
+      var results = []
+      for (var i = 0; i < arr.length; i++) {
+          let t = arr[i];
+          var norm = (t - timbre_colors.min[i]) / (timbre_colors.max[i] - timbre_colors.min[i]);
+          results[i] = norm * 255;
+      }
+      return results;
+  }
+
+    
+
+
+    for(let i = 0; i < body.segments.length; i++){
       let min_value = Math.min(...body.segments[i].pitches);
+      datasets.loudness_max = body.segments[i].loudness_max > datasets.loudness_max ? body.segments[i].loudness_max : datasets.loudness_max;
+      datasets.loudness_min = body.segments[i].loudness_start < datasets.loudness_min ? body.segments[i].loudness_start : datasets.loudness_min;
+      datasets.loudness.push({
+        start_time: body.segments[i].start * 1000,
+        start_value: body.segments[i].loudness_start,
+        max_time: body.segments[i].loudness_max_time * 1000,
+        max_value: body.segments[i].loudness_max,
+      });
       for(let j = 0; j < body.segments[i].pitches.length; j++){
-        if(datasets[j] === undefined){
-          datasets[j] = {
-            label: `Pitch ${j + 1}`,
-            backgroundColor: color_pitches[j],
-            borderColor: color_pitches[j],
-            fill: false,
-            data: [],
-            lineTension: 0,
-          };
+        if(datasets.pitches[j] === undefined){
+          datasets.pitches[j] = [];
         }
-        
-        datasets[j].data.push({
-          x: body.segments[i].start * 1000,
-          //y: body.segments[i].pitches[j] - min_value,
-          y: j + 1,
+
+        datasets.pitches[j].push({
+          start_time: body.segments[i].start * 1000,
+          duration: body.segments[i].duration * 1000,
+          value: body.segments[i].pitches[j],
+          //value: body.segments[i].pitches[j] - min_value,
         });
+
+      } 
+
+      datasets.timbre_colors.push(body.segments[i].timbre.slice());
+
+      //we need to normalize datasets.timbre_colors by setting timbre_color.min and timbre_colors.max
+      for (var c = 0; c < body.segments[i].timbre.length; c++) {
+        let t = body.segments[i].timbre[c];
+        timbre_colors.min[c] = timbre_colors.min[c] === undefined ? 100 : timbre_colors.min[c];
+        timbre_colors.max[c] = timbre_colors.max[c] === undefined ? -100 : timbre_colors.max[c];
+        if (t < timbre_colors.min[c]) {
+            timbre_colors.min[c] = t;
+        }
+        if (t > timbre_colors.max[c]) {
+          timbre_colors.max[c] = t;
+        }
+      }
+
+      //next we are going to look at the timbre vector for this segment and try to categorize it
+      let categorized_timbre_vector = false;
+      for(let c = 0; c < timbre_categories.length; c++){
+        if(CalculateEuclideanDistance(body.segments[i].timbre, timbre_categories[c].timbre, dimensions) < max_distance){
+          // we found a category that this timbre can go into
+          timbre_categories[c].segment_indexes.push(i);
+          categorized_timbre_vector = true;
+          break;
+        }
+      }
+
+      if(!categorized_timbre_vector){
+        timbre_categories.push({
+          timbre: body.segments[i].timbre,
+          segment_indexes: [i],
+        });
+      }
+
+
+    }
+
+    let total_segments = body.segments.length;
+    //now that we have categorized all the timbres we need to calculate how unqiue a timbre is which we do by calcuating the percentage of segments that is in a specific category and subtracting that value from 1 so if there are very little timbres in a category a category will have a high value for uniqueness
+    for(let c = 0; c < timbre_categories.length; c++){
+      let timbre_unqiueness = 1 - (timbre_categories[c].segment_indexes.length / total_segments);
+      for(let segment_index of timbre_categories[c].segment_indexes){
+        datasets.timbre_uniqueness[segment_index] = timbre_unqiueness;
       }
     }
 
-    console.log(datasets)
+    // we need to go through each value of the timbre_colors array and normalize each array
+    datasets.timbre_colors = datasets.timbre_colors.map(getNormalizedTimbreColor);
 
-    res.render('pages/audio-analysis-chart.ejs',{datasets: datasets});
+
+    //console.log(body.segments.length);
+    
+
+    //console.log(datasets);
+
+    res.send(datasets);
   });
 });
+
+function CalculateEuclideanDistance(a1, a2, length){
+  let result = 0;
+  let diff;
+  for (i = 0; i < length; i += 1) {
+    diff = a1[i] - a2[i];
+    result += diff * diff;
+  }
+
+  return Math.sqrt(result); 
+  
+}
 
 app.get('/editor/:SpotifyID', function (req, res) {
   var options = {

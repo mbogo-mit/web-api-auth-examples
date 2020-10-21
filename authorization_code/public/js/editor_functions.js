@@ -124,11 +124,11 @@ function SetSongPlayBackTimeText(current_song_time){
 }
 
 function ConvertMillisecondsToTimeString(current_song_time){
-    let totalSeconds = Math.floor(current_song_time / 1000); // converting to seconds
+    let totalSeconds = current_song_time / 1000; // converting to seconds
     let hours = Math.floor(totalSeconds / 3600);
     totalSeconds %= 3600;
     let minutes = Math.floor(totalSeconds / 60);
-    let seconds = totalSeconds % 60;
+    let seconds = (totalSeconds % 60).toFixed(1);
     return `${hours > 0 ? hours + ":" : ""}${minutes > 9 ? minutes + ":" : "0" + minutes + ":"}${seconds > 9 ? seconds : "0" + seconds}`;
 }
 
